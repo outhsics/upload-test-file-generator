@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.3] - 2026-02-28
+
+### Added
+
+- First-run macOS Gatekeeper repair guide (inline + modal).
+- One-click copy for Gatekeeper fix command.
+- Clear unnotarized warning added to release notes and README docs.
+
+### Changed
+
+- Release workflow no longer hard-fails when Apple signing secrets are missing.
+- Download-page release body now includes explicit macOS first-launch fix command.
+
 ## [0.1.2] - 2026-02-28
 
 ### Added

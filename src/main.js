@@ -2,6 +2,8 @@ const tauri = window.__TAURI__;
 const invoke = tauri?.core?.invoke;
 
 const INSTALL_COMMAND = "brew install ffmpeg";
+const GATEKEEPER_FIX_COMMAND = 'xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"';
+const GATEKEEPER_STORAGE_KEY = "gatekeeper_guide_seen_v1";
 
 const $ = (id) => document.getElementById(id);
 const tabs = Array.from(document.querySelectorAll(".tab"));
@@ -183,6 +185,12 @@ function fallbackCopyText(text) {
   document.body.removeChild(ta);
 }
 
+function isMacOS() {
+  const agent = navigator.userAgent || "";
+  const platform = navigator.platform || "";
+  return agent.includes("Mac") || platform.includes("Mac");
+}
+
 async function copyInstallCommand() {
   try {
     if (navigator.clipboard?.writeText) {
@@ -191,6 +199,19 @@ async function copyInstallCommand() {
       fallbackCopyText(INSTALL_COMMAND);
     }
     appendLog("已复制安装命令：brew install ffmpeg");
+  } catch (error) {
+    appendLog(`复制失败：${String(error)}`);
+  }
+}
+
+async function copyGatekeeperCommand() {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(GATEKEEPER_FIX_COMMAND);
+    } else {
+      fallbackCopyText(GATEKEEPER_FIX_COMMAND);
+    }
+    appendLog("已复制修复命令：xattr -dr com.apple.quarantine ...");
   } catch (error) {
     appendLog(`复制失败：${String(error)}`);
   }
@@ -223,6 +244,47 @@ function ensureFfmpegReady() {
 async function openInstallGuide() {
   if (busy) return;
   await callCommand("open_install_guide");
+}
+
+function closeGatekeeperModal() {
+  $("gatekeeper_overlay").classList.add("hidden");
+  try {
+    localStorage.setItem(GATEKEEPER_STORAGE_KEY, "1");
+  } catch (_error) {
+    // Ignore storage failures in restricted environments.
+  }
+}
+
+function initGatekeeperGuide() {
+  const show = isMacOS();
+  const panel = $("gatekeeper_guide");
+  const modal = $("gatekeeper_overlay");
+
+  $("gatekeeper_cmd_inline").textContent = GATEKEEPER_FIX_COMMAND;
+  $("gatekeeper_cmd_modal").textContent = GATEKEEPER_FIX_COMMAND;
+  $("copy_gatekeeper_cmd").addEventListener("click", copyGatekeeperCommand);
+  $("copy_gatekeeper_cmd_modal").addEventListener("click", copyGatekeeperCommand);
+  $("open_security_guide").addEventListener("click", openInstallGuide);
+  $("open_security_guide_modal").addEventListener("click", openInstallGuide);
+  $("close_gatekeeper_modal").addEventListener("click", closeGatekeeperModal);
+
+  if (!show) {
+    panel.classList.add("hidden");
+    modal.classList.add("hidden");
+    return;
+  }
+
+  panel.classList.remove("hidden");
+
+  let seen = false;
+  try {
+    seen = localStorage.getItem(GATEKEEPER_STORAGE_KEY) === "1";
+  } catch (_error) {
+    seen = false;
+  }
+  if (!seen) {
+    modal.classList.remove("hidden");
+  }
 }
 
 function bindEvents() {
@@ -301,6 +363,7 @@ function bindEvents() {
 async function bootstrap() {
   setupTabs();
   bindEvents();
+  initGatekeeperGuide();
   $("install_cmd_inline").textContent = INSTALL_COMMAND;
   $("install_cmd_modal").textContent = INSTALL_COMMAND;
   updateButtonStates();

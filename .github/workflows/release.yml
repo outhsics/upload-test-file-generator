@@ -33,26 +33,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Validate signing and notarization secrets
-        env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          missing=()
-          for key in APPLE_CERTIFICATE APPLE_CERTIFICATE_PASSWORD APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID; do
-            if [ -z "${!key}" ]; then
-              missing+=("$key")
-            fi
-          done
-          if [ ${#missing[@]} -gt 0 ]; then
-            echo "::error::Missing required GitHub secrets for macOS signing/notarization: ${missing[*]}"
-            echo "::error::Please configure repository secrets before tagging a release."
-            exit 1
-          fi
-
       - name: Build and Upload Release Assets
         uses: tauri-apps/tauri-action@v0
         env:
@@ -66,7 +46,18 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 上传测试文件生成器 ${{ github.ref_name }}
-          releaseBody: See CHANGELOG.md for details.
+          releaseBody: |
+            ⚠️ 注意（未公证版本常见提示）
+            部分 macOS 设备首次打开可能提示“已损坏，无法打开”。这通常是 Gatekeeper 对未公证应用的拦截。
+
+            修复命令（将 App 拖到 Applications 后执行）：
+            `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
+
+            详细说明：
+            - 中文: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md
+            - EN: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.md
+
+            See CHANGELOG.md for details.
           releaseDraft: false
           prerelease: false
           args: --bundles app,dmg
@@ -102,7 +93,18 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 上传测试文件生成器 ${{ github.ref_name }}
-          releaseBody: See CHANGELOG.md for details.
+          releaseBody: |
+            ⚠️ 注意（未公证版本常见提示）
+            部分 macOS 设备首次打开可能提示“已损坏，无法打开”。这通常是 Gatekeeper 对未公证应用的拦截。
+
+            修复命令（将 App 拖到 Applications 后执行）：
+            `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
+
+            详细说明：
+            - 中文: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md
+            - EN: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.md
+
+            See CHANGELOG.md for details.
           releaseDraft: false
           prerelease: false
           args: --bundles nsis

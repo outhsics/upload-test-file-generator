@@ -4,6 +4,8 @@
 
 Desktop app built with Tauri for generating upload test files at configurable size/specs.
 
+> ⚠️ Public installers are currently unsigned/unnotarized by default. If macOS says the app is damaged, follow [User Guide section 2](./docs/USER_GUIDE.md).
+
 ## Features
 
 - Generate image/audio/video test files for upload testing.

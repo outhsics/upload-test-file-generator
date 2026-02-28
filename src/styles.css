@@ -236,6 +236,17 @@ label {
   color: var(--muted);
 }
 
+#gatekeeper_guide {
+  border-color: #f0d3a8;
+  background: #fffaf2;
+}
+
+#gatekeeper_guide code,
+#gatekeeper_overlay code {
+  border-color: #f0d3a8;
+  background: #fff4df;
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

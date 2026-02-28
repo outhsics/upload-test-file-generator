@@ -1,0 +1,9 @@
+macOS unsigned fallback commands:
+
+xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"
+open "/Applications/上传测试文件生成器.app"
+
+If still blocked:
+
+codesign --force --deep --sign - "/Applications/上传测试文件生成器.app"
+open "/Applications/上传测试文件生成器.app"

@@ -44,7 +44,8 @@ jobs:
             ⚠️ 重要（macOS 未公证版本）
             1) 请不要在 DMG 窗口里直接双击 App。
             2) 正确步骤：先拖到 Applications，再从“应用程序”中打开。
-            3) 若提示“已损坏，无法打开”，请先下载 `*-macos-unsigned-quickstart.zip` 并双击其中 `macos-quick-fix.command`。
+            3) 若被拦截：先在“应用程序”里尝试打开一次，然后到“系统设置 -> 隐私与安全性”点击“仍要打开”。
+            4) 若仍提示“已损坏，无法打开”，再按 quickstart 包中的终端命令执行。
 
             手动修复命令（已拖到 Applications 后执行）：
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
@@ -73,11 +74,11 @@ jobs:
           rm -rf "$PACKAGE_DIR"
           mkdir -p "$PACKAGE_DIR"
           cp -R "$APP_PATH" "$PACKAGE_DIR/"
-          cp scripts/macos-quick-fix.command "$PACKAGE_DIR/"
           cp docs/UNSIGNED_QUICKSTART.zh-CN.md "$PACKAGE_DIR/README-先看.md"
           cp docs/UNSIGNED_QUICKSTART.md "$PACKAGE_DIR/README-FIRST.md"
+          cp docs/TERMINAL_FIX.txt "$PACKAGE_DIR/TERMINAL_FIX.txt"
 
-          ZIP_NAME="upload-test-file-generator-${GITHUB_REF_NAME}-macos-unsigned-quickstart.zip"
+          ZIP_NAME="upload-test-file-generator-${GITHUB_REF_NAME}-macos-open-guide.zip"
           (
             cd "$PACKAGE_DIR"
             zip -qry "$ZIP_NAME" .
@@ -127,7 +128,8 @@ jobs:
             ⚠️ 重要（macOS 未公证版本）
             1) 请不要在 DMG 窗口里直接双击 App。
             2) 正确步骤：先拖到 Applications，再从“应用程序”中打开。
-            3) 若提示“已损坏，无法打开”，请先下载 `*-macos-unsigned-quickstart.zip` 并双击其中 `macos-quick-fix.command`。
+            3) 若被拦截：先在“应用程序”里尝试打开一次，然后到“系统设置 -> 隐私与安全性”点击“仍要打开”。
+            4) 若仍提示“已损坏，无法打开”，再按 quickstart 包中的终端命令执行。
 
             手动修复命令（已拖到 Applications 后执行）：
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`

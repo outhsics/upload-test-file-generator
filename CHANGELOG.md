@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.6] - 2026-02-28
+
+### Changed
+
+- Replaced script-first onboarding with GUI-first Gatekeeper flow: try open once, then use `Privacy & Security -> Open Anyway`.
+- Release asset renamed to `*-macos-open-guide.zip` and now includes app + guides + terminal fallback text (no executable script).
+- Release notes and user guides now emphasize GUI flow before terminal commands.
+
+### Removed
+
+- Removed distributed `macos-quick-fix.command` to avoid secondary Gatekeeper warnings on script files.
+
 ## [0.1.5] - 2026-02-28
 
 ### Added

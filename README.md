@@ -32,7 +32,7 @@ pnpm run dev
 # macOS .app + .dmg
 pnpm run build:mac
 
-# Windows installer bundles (for CI/Windows runners)
+# Windows installer bundle (for CI/Windows runners)
 pnpm run build:windows
 ```
 
@@ -57,7 +57,7 @@ Styles:
 Tag-based release workflow builds installers and publishes GitHub Releases:
 
 - macOS: `.app`, `.dmg`
-- Windows: `.nsis.exe`, `.msi`
+- Windows: `.nsis.exe`
 
 Create release tag:
 

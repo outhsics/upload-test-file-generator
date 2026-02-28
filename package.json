@@ -8,7 +8,7 @@
     "dev": "tauri dev",
     "build": "tauri build --bundles app,dmg",
     "build:mac": "tauri build --bundles app,dmg",
-    "build:windows": "tauri build --bundles nsis,msi",
+    "build:windows": "tauri build --bundles nsis",
     "icons:generate": "python3 scripts/generate_icon_variants.py",
     "icons:apply": "python3 scripts/apply_icon.py tech && tauri icon src-tauri/icons/app-icon.png -o src-tauri/icons"
   },

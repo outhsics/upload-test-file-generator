@@ -55,7 +55,7 @@ pnpm tauri icon src-tauri/icons/app-icon.png -o src-tauri/icons
 配置了基于 Tag 的 GitHub Release 工作流，会自动构建并上传安装包：
 
 - macOS：`.app`、`.dmg`
-- Windows：`.nsis.exe`、`.msi`
+- Windows：`.nsis.exe`
 
 发布示例：
 

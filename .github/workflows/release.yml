@@ -10,7 +10,17 @@ permissions:
 
 jobs:
   build-macos:
-    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            target: aarch64-apple-darwin
+            arch: arm64
+          - runner: macos-13
+            target: x86_64-apple-darwin
+            arch: x64
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - name: Checkout
@@ -29,6 +39,8 @@ jobs:
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -57,20 +69,21 @@ jobs:
             See CHANGELOG.md for details.
           releaseDraft: false
           prerelease: false
-          args: --bundles app,dmg
+          args: --target ${{ matrix.target }} --bundles app,dmg
 
       - name: Build macOS unsigned quickstart zip
         id: quickstart
         shell: bash
         run: |
           set -euo pipefail
-          APP_PATH="$(find src-tauri/target/release/bundle/macos -maxdepth 1 -type d -name '*.app' | head -n 1)"
+          BUNDLE_BASE="src-tauri/target/${{ matrix.target }}/release/bundle"
+          APP_PATH="$(find "${BUNDLE_BASE}/macos" -maxdepth 1 -type d -name '*.app' | head -n 1)"
           if [ -z "$APP_PATH" ]; then
             echo "Cannot find built macOS .app bundle"
             exit 1
           fi
 
-          PACKAGE_DIR="src-tauri/target/release/bundle/quickstart"
+          PACKAGE_DIR="${BUNDLE_BASE}/quickstart-${{ matrix.arch }}"
           rm -rf "$PACKAGE_DIR"
           mkdir -p "$PACKAGE_DIR"
           cp -R "$APP_PATH" "$PACKAGE_DIR/"
@@ -78,18 +91,45 @@ jobs:
           cp docs/UNSIGNED_QUICKSTART.md "$PACKAGE_DIR/README-FIRST.md"
           cp docs/TERMINAL_FIX.txt "$PACKAGE_DIR/TERMINAL_FIX.txt"
 
-          ZIP_NAME="upload-test-file-generator-${GITHUB_REF_NAME}-macos-open-guide.zip"
+          ZIP_NAME="upload-test-file-generator-${GITHUB_REF_NAME}-macos-open-guide-${{ matrix.arch }}.zip"
           (
             cd "$PACKAGE_DIR"
             zip -qry "$ZIP_NAME" .
           )
           echo "zip_path=${PACKAGE_DIR}/${ZIP_NAME}" >> "$GITHUB_OUTPUT"
 
-      - name: Upload macOS unsigned quickstart zip
+      - name: Prepare macOS DMG aliases for Homebrew
+        id: dmg_alias
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUNDLE_BASE="src-tauri/target/${{ matrix.target }}/release/bundle"
+          DMG_PATH="$(find "${BUNDLE_BASE}/dmg" -maxdepth 1 -type f -name '*.dmg' | head -n 1)"
+          if [ -z "$DMG_PATH" ]; then
+            echo "Cannot find built macOS .dmg bundle"
+            exit 1
+          fi
+
+          ALIAS_DIR="${BUNDLE_BASE}/alias"
+          mkdir -p "$ALIAS_DIR"
+
+          STATIC_NAME="upload-test-file-generator-macos-${{ matrix.arch }}.dmg"
+          VERSIONED_NAME="upload-test-file-generator-${GITHUB_REF_NAME}-macos-${{ matrix.arch }}.dmg"
+
+          cp "$DMG_PATH" "${ALIAS_DIR}/${STATIC_NAME}"
+          cp "$DMG_PATH" "${ALIAS_DIR}/${VERSIONED_NAME}"
+
+          echo "dmg_static_path=${ALIAS_DIR}/${STATIC_NAME}" >> "$GITHUB_OUTPUT"
+          echo "dmg_versioned_path=${ALIAS_DIR}/${VERSIONED_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload macOS extra assets
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: ${{ steps.quickstart.outputs.zip_path }}
+          files: |
+            ${{ steps.quickstart.outputs.zip_path }}
+            ${{ steps.dmg_alias.outputs.dmg_static_path }}
+            ${{ steps.dmg_alias.outputs.dmg_versioned_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

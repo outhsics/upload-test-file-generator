@@ -1,13 +1,15 @@
 {
   "name": "upload-test-file-generator-tauri",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "type": "module",
   "scripts": {
     "tauri": "tauri",
     "dev": "tauri dev",
-    "build": "tauri build --bundles app,dmg",
-    "build:mac": "tauri build --bundles app,dmg",
+    "build": "tauri build --target aarch64-apple-darwin --bundles app,dmg",
+    "build:mac": "tauri build --target aarch64-apple-darwin --bundles app,dmg",
+    "build:mac:arm64": "tauri build --target aarch64-apple-darwin --bundles app,dmg",
+    "build:mac:x64": "tauri build --target x86_64-apple-darwin --bundles app,dmg",
     "build:windows": "tauri build --bundles nsis",
     "icons:generate": "python3 scripts/generate_icon_variants.py",
     "icons:apply": "python3 scripts/apply_icon.py tech && tauri icon src-tauri/icons/app-icon.png -o src-tauri/icons"

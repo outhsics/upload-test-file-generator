@@ -2,7 +2,10 @@
 
 ## 1. Install
 
-1. Download the latest `.dmg` from GitHub Releases (recommended: also download `*-macos-open-guide.zip`).
+1. Download the `.dmg` that matches your Mac:
+   - Apple Silicon (M1/M2/M3/M4): `upload-test-file-generator-macos-arm64.dmg`
+   - Intel Mac: `upload-test-file-generator-macos-x64.dmg`
+   Also recommended: `*-macos-open-guide-arm64.zip` or `*-macos-open-guide-x64.zip`.
 2. Open the DMG and drag `上传测试文件生成器` to Applications.
 3. Eject the DMG and do not launch the app directly inside the DMG window.
 4. If macOS blocks first launch, allow it in `System Settings -> Privacy & Security`.

@@ -1,6 +1,6 @@
 # 上传测试文件生成器
 
-[English README](./README.md) | [用户操作指南](./docs/USER_GUIDE.zh-CN.md) | [User Guide (EN)](./docs/USER_GUIDE.md) | [签名与公证](./docs/RELEASE_SIGNING.zh-CN.md)
+[English README](./README.md) | [用户操作指南](./docs/USER_GUIDE.zh-CN.md) | [Homebrew 安装](./docs/HOMEBREW.zh-CN.md) | [User Guide (EN)](./docs/USER_GUIDE.md) | [签名与公证](./docs/RELEASE_SIGNING.zh-CN.md)
 
 这是一个基于 Tauri 的桌面应用，用于开发阶段快速生成上传测试文件。
 
@@ -32,8 +32,11 @@ pnpm run dev
 ## 打包
 
 ```bash
-# 打 macOS 的 .app + .dmg
+# 打 macOS arm64 的 .app + .dmg（M 系列芯片）
 pnpm run build:mac
+
+# 打 macOS x64 的 .app + .dmg（Intel 芯片）
+pnpm run build:mac:x64
 
 # 打 Windows 安装包（建议在 Windows Runner 上执行）
 pnpm run build:windows
@@ -57,9 +60,17 @@ pnpm tauri icon src-tauri/icons/app-icon.png -o src-tauri/icons
 
 配置了基于 Tag 的 GitHub Release 工作流，会自动构建并上传安装包：
 
-- macOS：`.app`、`.dmg`
-- macOS 额外：`*-macos-open-guide.zip`（含图形化引导和终端兜底命令）
+- macOS arm64（Apple Silicon）：`upload-test-file-generator-macos-arm64.dmg`
+- macOS x64（Intel）：`upload-test-file-generator-macos-x64.dmg`
+- macOS 额外：`*-macos-open-guide-arm64.zip`、`*-macos-open-guide-x64.zip`
 - Windows：`.nsis.exe`
+
+Homebrew（自动识别架构）：
+
+```bash
+brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator
+brew install --cask --no-quarantine upload-test-file-generator
+```
 
 发布示例：
 

@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.7] - 2026-02-28
+
+### Added
+
+- Homebrew Cask tap support with architecture-aware URLs (`arm64` and `x64`).
+- New release DMG aliases for stable download names:
+  - `upload-test-file-generator-macos-arm64.dmg`
+  - `upload-test-file-generator-macos-x64.dmg`
+
+### Changed
+
+- macOS release workflow now builds both `aarch64-apple-darwin` and `x86_64-apple-darwin`.
+- Quickstart guide archive is now architecture-specific (`*-macos-open-guide-arm64.zip` / `*-macos-open-guide-x64.zip`).
+- Local build scripts now expose explicit `build:mac:arm64` and `build:mac:x64`.
+
 ## [0.1.6] - 2026-02-28
 
 ### Changed

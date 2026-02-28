@@ -1,6 +1,6 @@
 # 上传测试文件生成器 (Upload Test File Generator)
 
-[中文说明](./README.zh-CN.md) | [User Guide (EN)](./docs/USER_GUIDE.md) | [用户操作指南](./docs/USER_GUIDE.zh-CN.md)
+[中文说明](./README.zh-CN.md) | [User Guide (EN)](./docs/USER_GUIDE.md) | [用户操作指南](./docs/USER_GUIDE.zh-CN.md) | [Signing & Notarization](./docs/RELEASE_SIGNING.md)
 
 Desktop app built with Tauri for generating upload test files at configurable size/specs.
 
@@ -66,6 +66,10 @@ Create release tag:
 git tag v0.1.0
 git push origin v0.1.0
 ```
+
+For production macOS release (signed + notarized), see:
+
+- [docs/RELEASE_SIGNING.md](./docs/RELEASE_SIGNING.md)
 
 ## Open Source
 

@@ -1,6 +1,6 @@
 # 上传测试文件生成器
 
-[English README](./README.md) | [用户操作指南](./docs/USER_GUIDE.zh-CN.md) | [User Guide (EN)](./docs/USER_GUIDE.md)
+[English README](./README.md) | [用户操作指南](./docs/USER_GUIDE.zh-CN.md) | [User Guide (EN)](./docs/USER_GUIDE.md) | [签名与公证](./docs/RELEASE_SIGNING.zh-CN.md)
 
 这是一个基于 Tauri 的桌面应用，用于开发阶段快速生成上传测试文件。
 
@@ -64,6 +64,10 @@ pnpm tauri icon src-tauri/icons/app-icon.png -o src-tauri/icons
 git tag v0.1.0
 git push origin v0.1.0
 ```
+
+商业级 macOS 发布（签名 + 公证）见：
+
+- [docs/RELEASE_SIGNING.zh-CN.md](./docs/RELEASE_SIGNING.zh-CN.md)
 
 ## 开源规范
 

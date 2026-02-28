@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.4] - 2026-02-28
+
+### Fixed
+
+- macOS release workflow now runs in unsigned mode by default (no `APPLE_*` env vars).
+- Prevented CI release failures for users who do not have Apple Developer signing secrets.
+
 ## [0.1.3] - 2026-02-28
 
 ### Added

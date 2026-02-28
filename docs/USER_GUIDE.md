@@ -2,13 +2,18 @@
 
 ## 1. Install
 
-1. Download the latest `.dmg` from GitHub Releases.
-2. Open it and drag `上传测试文件生成器` to Applications.
-3. If macOS blocks first launch, allow it in `System Settings -> Privacy & Security`.
+1. Download the latest `.dmg` from GitHub Releases (recommended: also download `*-macos-unsigned-quickstart.zip`).
+2. Open the DMG and drag `上传测试文件生成器` to Applications.
+3. Eject the DMG and do not launch the app directly inside the DMG window.
+4. If macOS blocks first launch, allow it in `System Settings -> Privacy & Security`.
 
 ## 2. If macOS says "App is damaged"
 
 On non-notarized builds, Gatekeeper may block first launch. Run:
+
+Preferred: open `*-macos-unsigned-quickstart.zip` and double-click `macos-quick-fix.command`.
+
+Manual commands:
 
 ```bash
 xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"

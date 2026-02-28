@@ -41,10 +41,12 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 上传测试文件生成器 ${{ github.ref_name }}
           releaseBody: |
-            ⚠️ 注意（未公证版本常见提示）
-            部分 macOS 设备首次打开可能提示“已损坏，无法打开”。这通常是 Gatekeeper 对未公证应用的拦截。
+            ⚠️ 重要（macOS 未公证版本）
+            1) 请不要在 DMG 窗口里直接双击 App。
+            2) 正确步骤：先拖到 Applications，再从“应用程序”中打开。
+            3) 若提示“已损坏，无法打开”，请先下载 `*-macos-unsigned-quickstart.zip` 并双击其中 `macos-quick-fix.command`。
 
-            修复命令（将 App 拖到 Applications 后执行）：
+            手动修复命令（已拖到 Applications 后执行）：
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
 
             详细说明：
@@ -55,6 +57,40 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: --bundles app,dmg
+
+      - name: Build macOS unsigned quickstart zip
+        id: quickstart
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP_PATH="$(find src-tauri/target/release/bundle/macos -maxdepth 1 -type d -name '*.app' | head -n 1)"
+          if [ -z "$APP_PATH" ]; then
+            echo "Cannot find built macOS .app bundle"
+            exit 1
+          fi
+
+          PACKAGE_DIR="src-tauri/target/release/bundle/quickstart"
+          rm -rf "$PACKAGE_DIR"
+          mkdir -p "$PACKAGE_DIR"
+          cp -R "$APP_PATH" "$PACKAGE_DIR/"
+          cp scripts/macos-quick-fix.command "$PACKAGE_DIR/"
+          cp docs/UNSIGNED_QUICKSTART.zh-CN.md "$PACKAGE_DIR/README-先看.md"
+          cp docs/UNSIGNED_QUICKSTART.md "$PACKAGE_DIR/README-FIRST.md"
+
+          ZIP_NAME="upload-test-file-generator-${GITHUB_REF_NAME}-macos-unsigned-quickstart.zip"
+          (
+            cd "$PACKAGE_DIR"
+            zip -qry "$ZIP_NAME" .
+          )
+          echo "zip_path=${PACKAGE_DIR}/${ZIP_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload macOS unsigned quickstart zip
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: ${{ steps.quickstart.outputs.zip_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-windows:
     runs-on: windows-latest
@@ -88,10 +124,12 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 上传测试文件生成器 ${{ github.ref_name }}
           releaseBody: |
-            ⚠️ 注意（未公证版本常见提示）
-            部分 macOS 设备首次打开可能提示“已损坏，无法打开”。这通常是 Gatekeeper 对未公证应用的拦截。
+            ⚠️ 重要（macOS 未公证版本）
+            1) 请不要在 DMG 窗口里直接双击 App。
+            2) 正确步骤：先拖到 Applications，再从“应用程序”中打开。
+            3) 若提示“已损坏，无法打开”，请先下载 `*-macos-unsigned-quickstart.zip` 并双击其中 `macos-quick-fix.command`。
 
-            修复命令（将 App 拖到 Applications 后执行）：
+            手动修复命令（已拖到 Applications 后执行）：
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
 
             详细说明：

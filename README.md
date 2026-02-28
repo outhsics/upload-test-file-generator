@@ -4,7 +4,7 @@
 
 Desktop app built with Tauri for generating upload test files at configurable size/specs.
 
-> ⚠️ Public installers are currently unsigned/unnotarized by default. If macOS says the app is damaged, follow [User Guide section 2](./docs/USER_GUIDE.md).
+> ⚠️ Public installers are currently unsigned/unnotarized by default. Do not launch the app directly inside the DMG window; drag to Applications first. If macOS says the app is damaged, use `*-macos-unsigned-quickstart.zip` first, then follow [User Guide section 2](./docs/USER_GUIDE.md).
 
 ## Features
 
@@ -60,6 +60,7 @@ Styles:
 Tag-based release workflow builds installers and publishes GitHub Releases:
 
 - macOS: `.app`, `.dmg`
+- macOS extra: `*-macos-unsigned-quickstart.zip` (includes one-click repair script)
 - Windows: `.nsis.exe`
 
 Create release tag:

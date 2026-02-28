@@ -4,7 +4,7 @@
 
 这是一个基于 Tauri 的桌面应用，用于开发阶段快速生成上传测试文件。
 
-> ⚠️ 当前公开安装包默认是未公证版本。若 macOS 提示“已损坏，无法打开”，请按 [用户操作指南第 2 节](./docs/USER_GUIDE.zh-CN.md) 修复。
+> ⚠️ 当前公开安装包默认是未公证版本。请不要在 DMG 窗口内直接双击 App；先拖到 Applications 再打开。若提示“已损坏，无法打开”，优先下载 `*-macos-unsigned-quickstart.zip` 运行一键修复脚本，详见 [用户操作指南第 2 节](./docs/USER_GUIDE.zh-CN.md)。
 
 ## 功能
 
@@ -58,6 +58,7 @@ pnpm tauri icon src-tauri/icons/app-icon.png -o src-tauri/icons
 配置了基于 Tag 的 GitHub Release 工作流，会自动构建并上传安装包：
 
 - macOS：`.app`、`.dmg`
+- macOS 额外：`*-macos-unsigned-quickstart.zip`（含一键修复脚本）
 - Windows：`.nsis.exe`
 
 发布示例：

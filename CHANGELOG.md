@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.5] - 2026-02-28
+
+### Added
+
+- New `macos-quick-fix.command` for one-click unsigned app repair and launch.
+- New release asset `*-macos-unsigned-quickstart.zip` with app + repair script + quickstart docs.
+
+### Changed
+
+- Release notes now explicitly warn users not to launch the app directly inside the DMG window.
+- Installation guides now prioritize quickstart zip flow before manual commands.
+- macOS bundle `hardenedRuntime` set to `false` for unsigned distribution mode.
+
 ## [0.1.4] - 2026-02-28
 
 ### Fixed

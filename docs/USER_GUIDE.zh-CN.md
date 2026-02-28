@@ -2,13 +2,18 @@
 
 ## 1. 安装
 
-1. 从 GitHub Releases 下载最新 `.dmg`。
+1. 从 GitHub Releases 下载最新 `.dmg`（推荐同时下载 `*-macos-unsigned-quickstart.zip`）。
 2. 打开 `.dmg`，把「上传测试文件生成器」拖到 Applications。
-3. 首次启动时如有系统安全提示，在“系统设置 -> 隐私与安全性”中允许启动。
+3. 立即弹出 DMG，不要在 DMG 窗口里直接双击 App。
+4. 首次启动时如有系统安全提示，在“系统设置 -> 隐私与安全性”中允许启动。
 
 ## 2. 若提示“已损坏，无法打开”
 
 未公证版本在部分 macOS 上会被 Gatekeeper 拦截。请先执行：
+
+优先方案：打开 `*-macos-unsigned-quickstart.zip`，双击 `macos-quick-fix.command`。
+
+手动方案：
 
 ```bash
 xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>上传测试文件生成器</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>上传测试文件生成器</h1>
+      <p class="hint">生成图片/音频/视频测试文件，用于上传功能联调。</p>
+
+      <section class="panel">
+        <h2>输出目录</h2>
+        <div class="row">
+          <input id="output_dir" type="text" />
+          <button id="open_output" type="button">打开目录</button>
+        </div>
+        <p id="ffmpeg_status" class="status">ffmpeg: checking...</p>
+      </section>
+
+      <section class="panel">
+        <h2>一键预设</h2>
+        <div class="row">
+          <button id="preset_img_10mb" type="button">10MB 图片</button>
+          <button id="preset_video_100mb" type="button">100MB 视频</button>
+          <button id="preset_audio_500mb" type="button">500MB 音频</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="tabs">
+          <button class="tab active" data-target="tab-image" type="button">图片</button>
+          <button class="tab" data-target="tab-audio" type="button">音频</button>
+          <button class="tab" data-target="tab-video" type="button">视频</button>
+        </div>
+
+        <div id="tab-image" class="tab-content active">
+          <div class="grid">
+            <label>前缀 <input id="img_prefix" value="image_test" /></label>
+            <label>格式
+              <select id="img_format">
+                <option value="png">png</option>
+                <option value="jpg">jpg</option>
+                <option value="webp">webp</option>
+                <option value="bmp">bmp</option>
+              </select>
+            </label>
+            <label>宽度 <input id="img_width" type="number" value="1080" min="1" /></label>
+            <label>高度 <input id="img_height" type="number" value="1080" min="1" /></label>
+            <label>数量 <input id="img_count" type="number" value="1" min="1" max="1000" /></label>
+            <label>质量(2-31, JPG/WEBP) <input id="img_quality" type="number" value="2" min="2" max="31" /></label>
+            <label>补齐到(MB) <input id="img_target_mb" type="number" value="0" min="0" step="0.1" /></label>
+          </div>
+          <button id="gen_image" type="button" class="primary">生成图片</button>
+        </div>
+
+        <div id="tab-audio" class="tab-content">
+          <div class="grid">
+            <label>前缀 <input id="aud_prefix" value="audio_test" /></label>
+            <label>格式
+              <select id="aud_format">
+                <option value="wav">wav</option>
+                <option value="mp3">mp3</option>
+                <option value="m4a">m4a</option>
+                <option value="flac">flac</option>
+              </select>
+            </label>
+            <label>时长(秒) <input id="aud_duration" type="number" value="10" min="0.1" step="0.1" /></label>
+            <label>采样率 <input id="aud_sample_rate" type="number" value="48000" min="8000" max="192000" /></label>
+            <label>声道 <input id="aud_channels" type="number" value="2" min="1" max="2" /></label>
+            <label>频率(Hz) <input id="aud_freq" type="number" value="440" min="20" /></label>
+            <label>码率(kbps) <input id="aud_bitrate" type="number" value="192" min="16" max="1024" /></label>
+            <label>数量 <input id="aud_count" type="number" value="1" min="1" max="1000" /></label>
+            <label>补齐到(MB) <input id="aud_target_mb" type="number" value="0" min="0" step="0.1" /></label>
+          </div>
+          <button id="gen_audio" type="button" class="primary">生成音频</button>
+        </div>
+
+        <div id="tab-video" class="tab-content">
+          <div class="grid">
+            <label>前缀 <input id="vid_prefix" value="video_test" /></label>
+            <label>格式
+              <select id="vid_format">
+                <option value="mp4">mp4</option>
+                <option value="mov">mov</option>
+                <option value="webm">webm</option>
+                <option value="mkv">mkv</option>
+              </select>
+            </label>
+            <label>宽度 <input id="vid_width" type="number" value="1280" min="16" /></label>
+            <label>高度 <input id="vid_height" type="number" value="720" min="16" /></label>
+            <label>时长(秒) <input id="vid_duration" type="number" value="10" min="0.1" step="0.1" /></label>
+            <label>FPS <input id="vid_fps" type="number" value="30" min="1" max="120" /></label>
+            <label>视频码率(kbps) <input id="vid_bitrate" type="number" value="3000" min="100" max="100000" /></label>
+            <label>音频码率(kbps) <input id="vid_audio_bitrate" type="number" value="128" min="16" max="1024" /></label>
+            <label>数量 <input id="vid_count" type="number" value="1" min="1" max="1000" /></label>
+            <label>补齐到(MB) <input id="vid_target_mb" type="number" value="0" min="0" step="0.1" /></label>
+          </div>
+          <label class="check"><input id="vid_with_audio" type="checkbox" checked /> 包含音频</label>
+          <button id="gen_video" type="button" class="primary">生成视频</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>日志</h2>
+        <textarea id="log" readonly></textarea>
+      </section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

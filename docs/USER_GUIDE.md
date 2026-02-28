@@ -1,0 +1,48 @@
+# User Guide
+
+## 1. Install
+
+1. Download the latest `.dmg` from GitHub Releases.
+2. Open it and drag `上传测试文件生成器` to Applications.
+3. If macOS blocks first launch, allow it in `System Settings -> Privacy & Security`.
+
+## 2. Install ffmpeg
+
+The app uses `ffmpeg` to generate media files:
+
+```bash
+brew install ffmpeg
+```
+
+Restart the app after installation. The header status should show `ffmpeg：已检测到`.
+
+## 3. Generate Test Files
+
+1. Select output directory (default: `~/Downloads/upload-test-files`).
+2. Switch to image/audio/video tab.
+3. Configure specs and click generate.
+4. Check logs for completion details.
+
+## 4. Quick Presets
+
+- `10MB image`
+- `100MB video`
+- `500MB audio`
+
+Each preset auto-fills fields and runs generation.
+
+## 5. FAQ
+
+### Q1: `ffmpeg not found`
+
+Install ffmpeg:
+
+```bash
+brew install ffmpeg
+```
+
+If you installed ffmpeg in a custom path, set `FFMPEG_PATH` to the executable location.
+
+### Q2: Size is not media-exact
+
+`Pad to MB` appends zero bytes to satisfy upload-size testing. For strict media validation backends, prefer controlling file size via bitrate/resolution/duration first.

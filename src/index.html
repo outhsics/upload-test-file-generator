@@ -17,7 +17,23 @@
           <input id="output_dir" type="text" />
           <button id="open_output" type="button">打开目录</button>
         </div>
-        <p id="ffmpeg_status" class="status">ffmpeg: checking...</p>
+        <p id="ffmpeg_status" class="status">ffmpeg：检测中...</p>
+        <div id="ffmpeg_guide" class="install-guide hidden">
+          <p class="guide-title">首次使用请先安装依赖</p>
+          <ol class="guide-steps">
+            <li>打开终端执行安装命令。</li>
+            <li>安装完成后回到 App 点击“重新检测”。</li>
+            <li>状态显示“已检测到”后即可开始生成文件。</li>
+          </ol>
+          <div class="row">
+            <code id="install_cmd_inline">brew install ffmpeg</code>
+          </div>
+          <div class="row">
+            <button id="copy_install_cmd" type="button">复制安装命令</button>
+            <button id="open_install_guide" type="button">打开安装指南</button>
+            <button id="recheck_ffmpeg" type="button">重新检测</button>
+          </div>
+        </div>
       </section>
 
       <section class="panel">
@@ -108,6 +124,23 @@
         <textarea id="log" readonly></textarea>
       </section>
     </main>
+
+    <div id="setup_overlay" class="setup-overlay hidden" aria-live="polite">
+      <section class="setup-card">
+        <h2>欢迎使用：先完成环境准备</h2>
+        <p>
+          该应用依赖 <strong>ffmpeg</strong> 生成媒体文件。安装完成后点击“重新检测”，即可开始使用。
+        </p>
+        <div class="row">
+          <code id="install_cmd_modal">brew install ffmpeg</code>
+        </div>
+        <div class="row">
+          <button id="copy_install_cmd_modal" type="button">复制安装命令</button>
+          <button id="open_install_guide_modal" type="button">打开安装指南</button>
+          <button id="recheck_ffmpeg_modal" type="button" class="primary">我已安装，重新检测</button>
+        </div>
+      </section>
+    </div>
     <script type="module" src="./main.js"></script>
   </body>
 </html>

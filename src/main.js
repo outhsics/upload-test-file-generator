@@ -1,17 +1,47 @@
 const tauri = window.__TAURI__;
 const invoke = tauri?.core?.invoke;
 
+const INSTALL_COMMAND = "brew install ffmpeg";
+
 const $ = (id) => document.getElementById(id);
 const tabs = Array.from(document.querySelectorAll(".tab"));
 const logEl = $("log");
+const gatedButtonIds = [
+  "gen_image",
+  "gen_audio",
+  "gen_video",
+  "preset_img_10mb",
+  "preset_video_100mb",
+  "preset_audio_500mb",
+];
 
 let busy = false;
+let ffmpegReady = false;
+
+function updateButtonStates() {
+  const buttons = Array.from(document.querySelectorAll("button"));
+  buttons.forEach((btn) => {
+    btn.disabled = false;
+  });
+
+  if (busy) {
+    buttons.forEach((btn) => {
+      btn.disabled = true;
+    });
+    return;
+  }
+
+  if (!ffmpegReady) {
+    gatedButtonIds.forEach((id) => {
+      const btn = $(id);
+      if (btn) btn.disabled = true;
+    });
+  }
+}
 
 function setBusy(isBusy) {
   busy = isBusy;
-  document.querySelectorAll("button").forEach((btn) => {
-    btn.disabled = isBusy;
-  });
+  updateButtonStates();
 }
 
 function appendLog(message) {
@@ -35,12 +65,34 @@ async function callCommand(command, payload = {}) {
     for (const line of response.logs || []) {
       appendLog(line);
     }
+    return response;
   } catch (error) {
-    appendLog(`ERROR: ${String(error)}`);
+    appendLog(`错误：${String(error)}`);
     throw error;
   } finally {
     setBusy(false);
   }
+}
+
+function setFfmpegState(ready) {
+  ffmpegReady = ready;
+  const statusEl = $("ffmpeg_status");
+  const guideEl = $("ffmpeg_guide");
+  const overlayEl = $("setup_overlay");
+
+  statusEl.classList.remove("ok", "warn");
+  if (ready) {
+    statusEl.textContent = "ffmpeg：已检测到，可以开始使用。";
+    statusEl.classList.add("ok");
+    guideEl.classList.add("hidden");
+    overlayEl.classList.add("hidden");
+  } else {
+    statusEl.textContent = "ffmpeg：未检测到，请先安装。";
+    statusEl.classList.add("warn");
+    guideEl.classList.remove("hidden");
+    overlayEl.classList.remove("hidden");
+  }
+  updateButtonStates();
 }
 
 function readNumber(id) {
@@ -119,28 +171,92 @@ function setupTabs() {
   });
 }
 
+function fallbackCopyText(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.position = "absolute";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+}
+
+async function copyInstallCommand() {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(INSTALL_COMMAND);
+    } else {
+      fallbackCopyText(INSTALL_COMMAND);
+    }
+    appendLog("已复制安装命令：brew install ffmpeg");
+  } catch (error) {
+    appendLog(`复制失败：${String(error)}`);
+  }
+}
+
+async function refreshFfmpegStatus(logSuccess = false) {
+  assertTauriReady();
+  try {
+    const detected = await invoke("check_ffmpeg");
+    const previouslyMissing = !ffmpegReady;
+    setFfmpegState(Boolean(detected));
+    if (detected && (logSuccess || previouslyMissing)) {
+      appendLog("检测成功：ffmpeg 已可用。");
+    }
+    if (!detected) {
+      appendLog("请先在终端安装：brew install ffmpeg");
+    }
+  } catch (error) {
+    appendLog(`依赖检测失败：${String(error)}`);
+  }
+}
+
+function ensureFfmpegReady() {
+  if (ffmpegReady) return true;
+  appendLog("当前无法生成：请先安装 ffmpeg，并点击“重新检测”。");
+  setFfmpegState(false);
+  return false;
+}
+
+async function openInstallGuide() {
+  if (busy) return;
+  await callCommand("open_install_guide");
+}
+
 function bindEvents() {
   $("open_output").addEventListener("click", async () => {
     if (busy) return;
     await callCommand("open_output_dir", { dir: outputDir() });
   });
 
+  $("copy_install_cmd").addEventListener("click", copyInstallCommand);
+  $("copy_install_cmd_modal").addEventListener("click", copyInstallCommand);
+
+  $("open_install_guide").addEventListener("click", openInstallGuide);
+  $("open_install_guide_modal").addEventListener("click", openInstallGuide);
+
+  $("recheck_ffmpeg").addEventListener("click", () => refreshFfmpegStatus(true));
+  $("recheck_ffmpeg_modal").addEventListener("click", () => refreshFfmpegStatus(true));
+
   $("gen_image").addEventListener("click", async () => {
-    if (busy) return;
+    if (busy || !ensureFfmpegReady()) return;
     await callCommand("generate_images", imagePayload());
   });
 
   $("gen_audio").addEventListener("click", async () => {
-    if (busy) return;
+    if (busy || !ensureFfmpegReady()) return;
     await callCommand("generate_audio", audioPayload());
   });
 
   $("gen_video").addEventListener("click", async () => {
-    if (busy) return;
+    if (busy || !ensureFfmpegReady()) return;
     await callCommand("generate_video", videoPayload());
   });
 
   $("preset_img_10mb").addEventListener("click", async () => {
+    if (busy || !ensureFfmpegReady()) return;
     $("img_prefix").value = "image_10mb";
     $("img_format").value = "jpg";
     $("img_width").value = "2048";
@@ -152,6 +268,7 @@ function bindEvents() {
   });
 
   $("preset_video_100mb").addEventListener("click", async () => {
+    if (busy || !ensureFfmpegReady()) return;
     $("vid_prefix").value = "video_100mb";
     $("vid_format").value = "mp4";
     $("vid_width").value = "1920";
@@ -167,6 +284,7 @@ function bindEvents() {
   });
 
   $("preset_audio_500mb").addEventListener("click", async () => {
+    if (busy || !ensureFfmpegReady()) return;
     $("aud_prefix").value = "audio_500mb";
     $("aud_format").value = "wav";
     $("aud_duration").value = "300";
@@ -183,6 +301,9 @@ function bindEvents() {
 async function bootstrap() {
   setupTabs();
   bindEvents();
+  $("install_cmd_inline").textContent = INSTALL_COMMAND;
+  $("install_cmd_modal").textContent = INSTALL_COMMAND;
+  updateButtonStates();
 
   if (!invoke) {
     appendLog("错误：Tauri API 不可用，请使用 `pnpm run dev` 启动。");
@@ -192,10 +313,7 @@ async function bootstrap() {
   try {
     const defaultDir = await invoke("default_output_dir");
     $("output_dir").value = defaultDir;
-    const ffmpeg = await invoke("check_ffmpeg");
-    $("ffmpeg_status").textContent = ffmpeg
-      ? "ffmpeg：已检测到"
-      : "ffmpeg：未检测到，请先执行 `brew install ffmpeg`";
+    await refreshFfmpegStatus(false);
     appendLog("应用已就绪。");
   } catch (error) {
     appendLog(`启动失败：${String(error)}`);

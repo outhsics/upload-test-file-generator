@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.2] - 2026-02-28
+
+### Added
+
+- First-run dependency onboarding flow for ffmpeg.
+- Inline install guide with copy command and re-check action.
+- Modal setup overlay shown when ffmpeg is missing.
+- New backend command to open install guide from app.
+
+### Changed
+
+- Disabled generation and preset buttons until ffmpeg is detected.
+- Improved UX logs and dependency state feedback.
+
+## [0.1.1] - 2026-02-28
+
+### Changed
+
+- Release pipeline adjusted to Windows NSIS-only bundling for stable automation.
+- Published bilingual release notes and standardized release assets.
+
 ## [0.1.0] - 2026-02-28
 
 ### Added

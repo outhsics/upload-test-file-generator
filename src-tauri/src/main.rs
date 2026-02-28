@@ -8,6 +8,8 @@ use std::process::Command;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const PAD_CHUNK_SIZE: usize = 1024 * 1024;
+const INSTALL_GUIDE_URL: &str =
+    "https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md";
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -224,6 +226,31 @@ fn require_ffmpeg() -> Result<PathBuf, String> {
     ))
 }
 
+fn open_in_system(target: &str) -> Result<(), String> {
+    #[cfg(target_os = "macos")]
+    let status = Command::new("open")
+        .arg(target)
+        .status()
+        .map_err(|err| format!("Failed to open target: {err}"))?;
+
+    #[cfg(target_os = "windows")]
+    let status = Command::new("cmd")
+        .args(["/C", "start", "", target])
+        .status()
+        .map_err(|err| format!("Failed to open target: {err}"))?;
+
+    #[cfg(all(unix, not(target_os = "macos")))]
+    let status = Command::new("xdg-open")
+        .arg(target)
+        .status()
+        .map_err(|err| format!("Failed to open target: {err}"))?;
+
+    if !status.success() {
+        return Err("Open target failed".to_string());
+    }
+    Ok(())
+}
+
 #[tauri::command]
 fn default_output_dir() -> String {
     let fallback = env::current_dir()
@@ -245,15 +272,18 @@ fn check_ffmpeg() -> bool {
 #[tauri::command]
 fn open_output_dir(dir: String) -> Result<GenerateResponse, String> {
     let output = resolve_output_dir(&dir)?;
-    let status = Command::new("open")
-        .arg(&output)
-        .status()
-        .map_err(|err| format!("Failed to open output dir: {err}"))?;
-    if !status.success() {
-        return Err("Open output dir failed".to_string());
-    }
+    let output_str = output.to_string_lossy().to_string();
+    open_in_system(&output_str)?;
     Ok(GenerateResponse {
-        logs: vec![format!("Opened output directory: {}", output.to_string_lossy())],
+        logs: vec![format!("已打开输出目录：{}", output_str)],
+    })
+}
+
+#[tauri::command]
+fn open_install_guide() -> Result<GenerateResponse, String> {
+    open_in_system(INSTALL_GUIDE_URL)?;
+    Ok(GenerateResponse {
+        logs: vec![format!("已打开安装指南：{}", INSTALL_GUIDE_URL)],
     })
 }
 
@@ -511,6 +541,7 @@ fn main() {
             default_output_dir,
             check_ffmpeg,
             open_output_dir,
+            open_install_guide,
             generate_images,
             generate_audio,
             generate_video

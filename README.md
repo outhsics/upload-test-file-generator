@@ -12,6 +12,7 @@ Desktop app built with Tauri for generating upload test files at configurable si
 - One-click presets:
   `10MB image`, `100MB video`, `500MB audio`.
 - ffmpeg auto-discovery for Homebrew and common macOS paths.
+- Built-in onboarding flow when ffmpeg is missing (copy command + recheck).
 
 ## Tech Stack
 

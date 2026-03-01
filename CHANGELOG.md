@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.9] - 2026-03-01
+
+### Changed
+
+- Release notes now use platform/architecture sections with clear recommended downloads.
+- Download guidance now explicitly groups macOS arm64, macOS x64, and Windows assets.
+- Added explicit Homebrew install block in release notes for faster onboarding.
+
 ## [0.1.8] - 2026-02-28
 
 ### Fixed

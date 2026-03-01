@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project uses Semantic Versioning.
 
+## [0.1.8] - 2026-02-28
+
+### Fixed
+
+- Stabilized dual-arch macOS release matrix by using `macos-latest` for both `arm64` and `x64` targets.
+- Prevented architecture-matrix release cancellation caused by runner label availability differences.
+
 ## [0.1.7] - 2026-02-28
 
 ### Added

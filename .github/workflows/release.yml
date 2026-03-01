@@ -51,20 +51,43 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 上传测试文件生成器 ${{ github.ref_name }}
           releaseBody: |
-            ⚠️ 重要（macOS 未公证版本）
-            1) 请不要在 DMG 窗口里直接双击 App。
-            2) 正确步骤：先拖到 Applications，再从“应用程序”中打开。
-            3) 若被拦截：先在“应用程序”里尝试打开一次，然后到“系统设置 -> 隐私与安全性”点击“仍要打开”。
-            4) 若仍提示“已损坏，无法打开”，再按 quickstart 包中的终端命令执行。
+            ## 推荐下载（先看这里）
+            - Apple Silicon（M1/M2/M3/M4）: `upload-test-file-generator-macos-arm64.dmg`
+            - Intel Mac: `upload-test-file-generator-macos-x64.dmg`
+            - Windows: `*.nsis.exe`
 
-            手动修复命令（已拖到 Applications 后执行）：
+            ## 按平台/架构下载清单
+            ### macOS (Apple Silicon / arm64)
+            - `upload-test-file-generator-macos-arm64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-arm64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-open-guide-arm64.zip`
+
+            ### macOS (Intel / x64)
+            - `upload-test-file-generator-macos-x64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-x64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-open-guide-x64.zip`
+
+            ### Windows
+            - `*.nsis.exe`
+
+            ## macOS 安装步骤（未公证版本）
+            1. 打开 DMG，把 App 拖到 `Applications`
+            2. 不要在 DMG 里直接双击运行
+            3. 在“应用程序”中先尝试打开一次（即使被拦截）
+            4. 到“系统设置 -> 隐私与安全性”点击“仍要打开”
+
+            若仍提示“已损坏，无法打开”，执行：
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
 
-            详细说明：
-            - 中文: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md
-            - EN: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.md
+            ## Homebrew（自动识别架构）
+            `brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator`
+            `brew install --cask --no-quarantine upload-test-file-generator`
 
-            See CHANGELOG.md for details.
+            ## 文档
+            - 中文指南: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md
+            - EN Guide: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.md
+            - Homebrew 中文: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/HOMEBREW.zh-CN.md
+            - Homebrew EN: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/HOMEBREW.md
           releaseDraft: false
           prerelease: false
           args: --target ${{ matrix.target }} --bundles app,dmg
@@ -163,20 +186,43 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 上传测试文件生成器 ${{ github.ref_name }}
           releaseBody: |
-            ⚠️ 重要（macOS 未公证版本）
-            1) 请不要在 DMG 窗口里直接双击 App。
-            2) 正确步骤：先拖到 Applications，再从“应用程序”中打开。
-            3) 若被拦截：先在“应用程序”里尝试打开一次，然后到“系统设置 -> 隐私与安全性”点击“仍要打开”。
-            4) 若仍提示“已损坏，无法打开”，再按 quickstart 包中的终端命令执行。
+            ## 推荐下载（先看这里）
+            - Apple Silicon（M1/M2/M3/M4）: `upload-test-file-generator-macos-arm64.dmg`
+            - Intel Mac: `upload-test-file-generator-macos-x64.dmg`
+            - Windows: `*.nsis.exe`
 
-            手动修复命令（已拖到 Applications 后执行）：
+            ## 按平台/架构下载清单
+            ### macOS (Apple Silicon / arm64)
+            - `upload-test-file-generator-macos-arm64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-arm64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-open-guide-arm64.zip`
+
+            ### macOS (Intel / x64)
+            - `upload-test-file-generator-macos-x64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-x64.dmg`
+            - `upload-test-file-generator-${{ github.ref_name }}-macos-open-guide-x64.zip`
+
+            ### Windows
+            - `*.nsis.exe`
+
+            ## macOS 安装步骤（未公证版本）
+            1. 打开 DMG，把 App 拖到 `Applications`
+            2. 不要在 DMG 里直接双击运行
+            3. 在“应用程序”中先尝试打开一次（即使被拦截）
+            4. 到“系统设置 -> 隐私与安全性”点击“仍要打开”
+
+            若仍提示“已损坏，无法打开”，执行：
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
 
-            详细说明：
-            - 中文: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md
-            - EN: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.md
+            ## Homebrew（自动识别架构）
+            `brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator`
+            `brew install --cask --no-quarantine upload-test-file-generator`
 
-            See CHANGELOG.md for details.
+            ## 文档
+            - 中文指南: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md
+            - EN Guide: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.md
+            - Homebrew 中文: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/HOMEBREW.zh-CN.md
+            - Homebrew EN: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/HOMEBREW.md
           releaseDraft: false
           prerelease: false
           args: --bundles nsis

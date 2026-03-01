@@ -68,8 +68,7 @@ pnpm tauri icon src-tauri/icons/app-icon.png -o src-tauri/icons
 Homebrew（自动识别架构）：
 
 ```bash
-brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator
-brew install --cask --no-quarantine upload-test-file-generator
+brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator && brew install --cask upload-test-file-generator
 ```
 
 发布示例：

@@ -70,8 +70,7 @@ Tag-based release workflow builds installers and publishes GitHub Releases:
 Homebrew (auto-arch):
 
 ```bash
-brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator
-brew install --cask --no-quarantine upload-test-file-generator
+brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator && brew install --cask upload-test-file-generator
 ```
 
 Create release tag:

@@ -11,10 +11,14 @@ brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-
 ## 2. Install cask (recommended)
 
 ```bash
-brew install --cask --no-quarantine upload-test-file-generator
+brew install --cask upload-test-file-generator
 ```
 
-`--no-quarantine` reduces first-launch blocks for unsigned/unnotarized apps.
+First-time quick install (tap + install in one line):
+
+```bash
+brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator && brew install --cask upload-test-file-generator
+```
 
 ## 3. Upgrade
 

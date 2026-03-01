@@ -11,10 +11,14 @@ brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-
 ## 2. 安装 Cask（推荐）
 
 ```bash
-brew install --cask --no-quarantine upload-test-file-generator
+brew install --cask upload-test-file-generator
 ```
 
-`--no-quarantine` 可减少未公证应用的首次拦截概率。
+首次快速安装（tap + install 一条命令）：
+
+```bash
+brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator && brew install --cask upload-test-file-generator
+```
 
 ## 3. 升级
 

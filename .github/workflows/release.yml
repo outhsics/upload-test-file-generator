@@ -80,8 +80,7 @@ jobs:
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
 
             ## Homebrew（自动识别架构）
-            `brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator`
-            `brew install --cask --no-quarantine upload-test-file-generator`
+            `brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator && brew install --cask upload-test-file-generator`
 
             ## 文档
             - 中文指南: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md
@@ -215,8 +214,7 @@ jobs:
             `xattr -dr com.apple.quarantine "/Applications/上传测试文件生成器.app"`
 
             ## Homebrew（自动识别架构）
-            `brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator`
-            `brew install --cask --no-quarantine upload-test-file-generator`
+            `brew tap outhsics/upload-test-file-generator https://github.com/outhsics/upload-test-file-generator && brew install --cask upload-test-file-generator`
 
             ## 文档
             - 中文指南: https://github.com/outhsics/upload-test-file-generator/blob/main/docs/USER_GUIDE.zh-CN.md

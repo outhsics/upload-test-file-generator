@@ -4,6 +4,15 @@
 
 Desktop app built with Tauri for generating upload test files at configurable size/specs.
 
+## Recruiter Snapshot
+
+- Status: `active`
+- Positioning: practical QA productivity utility for upload and media testing
+- Core Value: quickly generate deterministic test files across image/audio/video scenarios
+- Stack: Tauri v2 (Rust + web UI), JavaScript, ffmpeg integration
+- Delivery Signal: release process, Homebrew distribution, cross-platform build workflow
+- Last Reviewed: `2026-03-02`
+
 > ⚠️ Public installers are currently unsigned/unnotarized by default. Do not launch the app directly inside the DMG window; drag to Applications first. If blocked, use `Privacy & Security -> Open Anyway` first; use terminal fallback only if needed. See [User Guide section 2](./docs/USER_GUIDE.md).
 
 ## Features
